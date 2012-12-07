@@ -17,7 +17,15 @@ Similarity is defined as the inner product
 (with NaNs set to 0) and 
 Distance is defined as 
 
-Zero - Similarity
+Zero - Similarity/1000
+
+Cluster needs the similarity to be less than one, 
+so I've encoded the assumption that the inner product
+will be less than 1000. This works for my applications,
+but you may need to set that number to something
+larger. See:
+
+cluster.patch : lines 72-76
 
 This patch is intended to be applied to 
 version 1.5 of Cluster version 3.0 
