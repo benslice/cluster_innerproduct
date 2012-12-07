@@ -1,0 +1,92 @@
+--- original/cluster-1.50/src/cluster.c
++++ patch/cluster-1.50/src/cluster.c
+@@ -1470,6 +1470,81 @@
+ /* *********************************************************************  */
+ 
+ static
++double inner_product(int n, double** data1, double** data2, int** mask1,
++  int** mask2, const double weight[], int index1, int index2, int transpose)
++/*
++Purpose
++=======
++
++The inner_product routine calculates the inner product distance between two rows or
++columns. The inner_product distance is defined as zero minus the inner product. 
++
++Arguments
++=========
++
++n      (input) int
++The number of elements in a row or column. If transpose==0, then n is the number
++of columns; otherwise, n is the number of rows.
++
++data1  (input) double array
++The data array containing the first vector.
++
++data2  (input) double array
++The data array containing the second vector.
++
++mask1  (input) int array
++This array which elements in data1 are missing. If mask1[i][j]==0, then
++data1[i][j] is missing.
++
++mask2  (input) int array
++This array which elements in data2 are missing. If mask2[i][j]==0, then
++data2[i][j] is missing.
++
++weight (input) double[n]
++These weights are ignored, but included for consistency with other distance
++measures.
++
++index1     (input) int
++Index of the first row or column.
++
++index2     (input) int
++Index of the second row or column.
++
++transpose (input) int
++If transpose==0, the distance between two rows in the matrix is calculated.
++Otherwise, the distance between two columns in the matrix is calculated.
++============================================================================
++*/
++{ int i;
++  double result = 0.;
++
++  if (transpose==0)
++  { for (i = 0; i < n; i++)
++    { if (mask1[index1][i] && mask2[index2][i])
++      { 
++        result += data1[index1][i] * data2[index2][i];
++      }
++    }
++  }
++  else
++  { for (i = 0; i < n; i++)
++    { if (mask1[i][index1] && mask2[i][index2])
++      { 
++        result += data1[i][index1] * data2[i][index2];
++      }
++    }
++  }
++  
++  if ( result > 1000 )
++  {
++    fprintf("%s", "Warning, inner_product < 1000 assumption violated. May product nonsense correlations\n");
++	}
++  result = 0. - result/1000;
++  return result;
++}
++/* *********************************************************************  */
++
++static
+ double spearman (int n, double** data1, double** data2, int** mask1,
+   int** mask2, const double weight[], int index1, int index2, int transpose)
+ /*
+@@ -1719,6 +1794,7 @@
+     case 'x': return &uacorrelation;
+     case 's': return &spearman;
+     case 'k': return &kendall;
++    case 'i': return &inner_product;
+     default: return &euclid;
+   }
+   return NULL; /* Never get here */

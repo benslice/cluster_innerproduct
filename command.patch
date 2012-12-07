@@ -1,0 +1,26 @@
+--- original/cluster-1.50/src/command.c
++++ patch/cluster-1.50/src/command.c
+@@ -119,6 +119,7 @@
+           "                6: Kendall's tau\n"
+           "                7: Euclidean distance\n"
+           "                8: City-block distance\n"
++          "                9: Inner-Product distance\n"
+           "                (default: 0)\n");
+   printf ("  -e [0..8]     Specifies the distance measure for microarray clustering\n");
+   printf ("                0: No clustering\n"
+@@ -130,6 +131,7 @@
+           "                6: Kendall's tau\n"
+           "                7: Euclidean distance\n"
+           "                8: City-block distance\n"
++          "                9: Inner-Product distance\n"
+           "                (default: 0)\n");
+   printf ("  -m [msca]     Specifies which hierarchical clustering method to use\n"
+           "                m: Pairwise complete-linkage\n"
+@@ -213,6 +215,7 @@
+     case 6: return 'k';
+     case 7: return 'e';
+     case 8: return 'b';
++    case 9: return 'i';
+     default: return '\0';
+   }
+   /* Never get here */
