@@ -1,10 +1,15 @@
 Cluster 3.0 (1.5) Inner Product patch
 =====================================
 
+Benjamin VanderSluis
+bvander@cs.umn.edu
+December 13, 2012
+
 This patch provides an additional
 similarity metric to "Cluster 3.0"
 Namely, the ability to cluster
 via a raw inner product.
+
 
 **Command Line Only**
 
@@ -29,7 +34,6 @@ cluster.patch : lines 72-76
 
 This patch is intended to be applied to 
 version 1.5 of Cluster version 3.0 
-(don't ask me!)
 
 which you can obtain here:
 http://bonsai.hgc.jp/~mdehoon/software/cluster/software.htm
